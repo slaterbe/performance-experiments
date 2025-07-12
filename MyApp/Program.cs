@@ -1,3 +1,5 @@
-﻿TriangleWindow.Main();
+﻿using BenchmarkDotNet.Running;
+//RunRenderer.ExecuteRender();
+RunExperiments.ExecuteTests();
 
-//RunExperiments.ExecuteTests();
+//BenchmarkRunner.Run<MyBenchmark>();
