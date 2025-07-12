@@ -13,6 +13,8 @@ public class TriangleWindow : GameWindow
     int _vertexArrayObject;
     int _shaderProgram;
 
+    private bool _bufferInitialized = false;
+
     public static int[] xVertex;
     public static int[] yVertex;
 
@@ -81,6 +83,10 @@ public class TriangleWindow : GameWindow
         _vertexArrayObject = GL.GenVertexArray();
         GL.BindVertexArray(_vertexArrayObject);
 
+        _vertexBufferObject = GL.GenBuffer();
+        GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+        GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
         int vertexShader = GL.CreateShader(ShaderType.VertexShader);
         GL.ShaderSource(vertexShader, _vertexShaderSrc);
         GL.CompileShader(vertexShader);
@@ -116,10 +122,6 @@ public class TriangleWindow : GameWindow
         Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, SIZE, 0, SIZE, -1, 1);
         int matrixLocation = GL.GetUniformLocation(_shaderProgram, "uProjection");
         GL.UniformMatrix4(matrixLocation, false, ref ortho);
-
-        _vertexBufferObject = GL.GenBuffer();
-        GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-        GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
         GL.BindVertexArray(_vertexArrayObject);
         GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Length / 2);
