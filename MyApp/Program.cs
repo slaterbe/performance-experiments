@@ -1,0 +1,3 @@
+﻿TriangleWindow.Main();
+
+//RunExperiments.ExecuteTests();
