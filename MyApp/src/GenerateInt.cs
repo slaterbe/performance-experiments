@@ -2,6 +2,18 @@ using System.Numerics;
 
 public static class RandomNumberGenerator
 {
+    public static float[] GetRandomFloatValues(int size, int range)
+    {
+        var rand = new Random();
+        var arrayTest = new float[size];
+        for (int i = 0; i < size; i++)
+        {
+            arrayTest[i] = rand.Next(range);
+        }
+
+        return arrayTest;
+    }
+
     public static int[] GetRandomValues(int size, int range)
     {
         var rand = new Random();

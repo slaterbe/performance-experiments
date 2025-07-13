@@ -9,12 +9,13 @@ Intel Core i7-5500U CPU 2.40GHz (Broadwell), 1 CPU, 4 logical and 2 physical cor
 IterationCount=20  
 
 ```
-| Method                                    | Mean       | Error      | StdDev     | Gen0     | Gen1     | Gen2     | Allocated |
-|------------------------------------------ |-----------:|-----------:|-----------:|---------:|---------:|---------:|----------:|
-| AllocateArrayOfInts                       |   3.174 ms |  0.4137 ms |  0.4598 ms | 234.3750 | 234.3750 | 234.3750 | 8000176 B |
-| AllocateListOfInts                        |   7.367 ms |  0.5000 ms |  0.4911 ms | 203.1250 | 203.1250 | 203.1250 | 8000198 B |
-| IncrementArrayOfInts                      |   5.124 ms |  0.4140 ms |  0.4768 ms |        - |        - |        - |         - |
-| IncrementArrayJumpingAround               | 134.987 ms | 15.2093 ms | 17.5151 ms |        - |        - |        - |     168 B |
-| IncrementArrayJumpingAroundInconsistently | 122.326 ms |  6.0847 ms |  6.5105 ms |        - |        - |        - |         - |
-| SIMDIncrementArray                        |   2.700 ms |  0.0908 ms |  0.1009 ms |        - |        - |        - |         - |
-| SIMDIncrementArrayRandomVector            |   4.440 ms |  0.3525 ms |  0.4059 ms |        - |        - |        - |         - |
+| Method                                    | Mean       | Error      | StdDev     | Gen0    | Gen1    | Gen2    | Allocated |
+|------------------------------------------ |-----------:|-----------:|-----------:|--------:|--------:|--------:|----------:|
+| AllocateArrayOfInts                       |   4.779 ms |  0.1919 ms |  0.2053 ms | 78.1250 | 78.1250 | 78.1250 | 8000076 B |
+| AllocateListOfInts                        |   8.868 ms |  0.3087 ms |  0.3431 ms | 62.5000 | 62.5000 | 62.5000 | 8000097 B |
+| IncrementArrayOfInts                      |   4.544 ms |  0.4262 ms |  0.4737 ms |       - |       - |       - |         - |
+| IncrementArrayJumpingAround               | 133.102 ms | 29.6891 ms | 34.1900 ms |       - |       - |       - |         - |
+| IncrementArrayJumpingAroundInconsistently |  60.844 ms |  6.0089 ms |  6.4295 ms |       - |       - |       - |         - |
+| SIMDIncrementArray                        |   1.709 ms |  0.2394 ms |  0.2661 ms |       - |       - |       - |         - |
+| SIMDIntIncrementArrayRandomVector         |   5.254 ms |  1.0588 ms |  1.1329 ms |       - |       - |       - |         - |
+| SIMDFloatIncrementArrayRandomVector       |   4.298 ms |  0.4508 ms |  0.5010 ms |       - |       - |       - |      10 B |
