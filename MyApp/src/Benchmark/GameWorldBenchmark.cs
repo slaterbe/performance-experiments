@@ -7,12 +7,22 @@ public class GameWorldBenchmark
 {
     GameWorldVersion1 gameWorld;
 
-
     [GlobalSetup]
     public void Setup()
     {
-        gameWorld = new GameWorldVersion1();
-        gameWorld.Instantiate(1024, 2048, 2048);
+        var configuration = new FlockingConfiguration();
+        configuration.WorldWidth = 2048;
+        configuration.WorldHeight = 2048;
+        configuration.BoidCount = 1024;
+
+        configuration.PerceptionDistance = 100f;
+        configuration.DesiredSeparation = 20f;
+
+        configuration.AlignmentWeight = 1.0f;
+        configuration.CohesionWeight = 1.0f;
+        configuration.SeparationWeight = 1.0f;
+
+        gameWorld = new GameWorldVersion1(configuration);
     }
 
     [Benchmark]

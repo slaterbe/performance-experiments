@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>MyBenchmark-20250713-095845</title>
+<title>MyBenchmark-20250713-220911</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -16,23 +16,15 @@
 BenchmarkDotNet v0.15.2, Linux Ubuntu 24.04.2 LTS (Noble Numbat)
 Intel Core i7-5500U CPU 2.40GHz (Broadwell), 1 CPU, 4 logical and 2 physical cores
 .NET SDK 8.0.117
-  [Host]     : .NET 8.0.17 (8.0.1725.26602), X64 RyuJIT AVX2
-  Job-VNIRUV : .NET 8.0.17 (8.0.1725.26602), X64 RyuJIT AVX2
+  [Host] : .NET 8.0.17 (8.0.1725.26602), X64 RyuJIT AVX2
 </code></pre>
 <pre><code>IterationCount=20  
 </code></pre>
 
 <table>
-<thead><tr><th>Method                             </th><th>Mean</th><th>Error</th><th>StdDev</th><th>Gen0</th><th>Gen1</th><th>Gen2</th><th>Allocated</th>
+<thead><tr><th>Method       </th><th>Mean</th><th>Error</th>
 </tr>
-</thead><tbody><tr><td>AllocateArrayOfInts</td><td>4.779 ms</td><td>0.1919 ms</td><td>0.2053 ms</td><td>78.1250</td><td>78.1250</td><td>78.1250</td><td>8000076 B</td>
-</tr><tr><td>AllocateListOfInts</td><td>8.868 ms</td><td>0.3087 ms</td><td>0.3431 ms</td><td>62.5000</td><td>62.5000</td><td>62.5000</td><td>8000097 B</td>
-</tr><tr><td>IncrementArrayOfInts</td><td>4.544 ms</td><td>0.4262 ms</td><td>0.4737 ms</td><td>-</td><td>-</td><td>-</td><td>-</td>
-</tr><tr><td>IncrementArrayJumpingAround</td><td>133.102 ms</td><td>29.6891 ms</td><td>34.1900 ms</td><td>-</td><td>-</td><td>-</td><td>-</td>
-</tr><tr><td>IncrementArrayJumpingAroundInconsistently</td><td>60.844 ms</td><td>6.0089 ms</td><td>6.4295 ms</td><td>-</td><td>-</td><td>-</td><td>-</td>
-</tr><tr><td>SIMDIncrementArray</td><td>1.709 ms</td><td>0.2394 ms</td><td>0.2661 ms</td><td>-</td><td>-</td><td>-</td><td>-</td>
-</tr><tr><td>SIMDIntIncrementArrayRandomVector</td><td>5.254 ms</td><td>1.0588 ms</td><td>1.1329 ms</td><td>-</td><td>-</td><td>-</td><td>-</td>
-</tr><tr><td>SIMDFloatIncrementArrayRandomVector</td><td>4.298 ms</td><td>0.4508 ms</td><td>0.5010 ms</td><td>-</td><td>-</td><td>-</td><td>10 B</td>
+</thead><tbody><tr><td>AllocateArrayOfInts</td><td>NA</td><td>NA</td>
 </tr></tbody></table>
 </body>
 </html>

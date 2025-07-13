@@ -2,17 +2,30 @@ public class GameWorldVersion1 : IGameWorld
 {
     public List<Boid> Boids { get; set; } = new List<Boid>();
 
-    public void Instantiate(int boidCount, int width, int height)
+    public readonly float CohesionWeight;
+    public readonly float AlignmentWeight;
+    public readonly float SeparationWeight;
+
+    public readonly float PerceptionDistance;
+    public readonly float DesiredSeparation;
+
+    public GameWorldVersion1(FlockingConfiguration config)
     {
         var random = new Random();
+        CohesionWeight = config.CohesionWeight;
+        AlignmentWeight = config.AlignmentWeight;
+        SeparationWeight = config.SeparationWeight;
 
-        for (int i = 0; i < boidCount; i++)
+        PerceptionDistance = config.PerceptionDistance;
+        DesiredSeparation = config.DesiredSeparation;
+
+        for (int i = 0; i < config.BoidCount; i++)
         {
 
             Boids.Add(new Boid
             {
-                PositionX = random.Next(width),
-                PositionY = random.Next(height),
+                PositionX = random.Next(config.WorldWidth),
+                PositionY = random.Next(config.WorldHeight),
                 VectorX = 0,
                 VectorY = 0
             });
@@ -36,8 +49,8 @@ public class GameWorldVersion1 : IGameWorld
     public void IncrementBoid(Boid primary)
     {
         // 1. Cohesion
-        int xCohesion = 0;
-        int yCohesion = 0;
+        float xCohesion = 0;
+        float yCohesion = 0;
 
         for (int i = 0; i < Boids.Count; i++)
         {
@@ -45,9 +58,10 @@ public class GameWorldVersion1 : IGameWorld
             if (secondary == primary) continue;
 
             var distance = primary.Distance(secondary);
-            if (distance > 100) continue;
+            if (distance > PerceptionDistance) continue;
 
-            var vectorFrom = primary.VectorTo(secondary);
+            var vectorFrom = primary.VectorTo(secondary)
+                .GetNormalisedVector();
             xCohesion += vectorFrom[0];
             yCohesion += vectorFrom[0];
         }
@@ -55,15 +69,15 @@ public class GameWorldVersion1 : IGameWorld
         yCohesion /= Boids.Count - 1;
 
         // 2. Alignment
-        int xAlignment = 0;
-        int yAlignment = 0;
+        float xAlignment = 0;
+        float yAlignment = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
             if (secondary == primary) continue;
 
             var distance = primary.Distance(secondary);
-            if (distance > 100) continue;
+            if (distance > PerceptionDistance) continue;
 
             xAlignment += Boids[i].VectorX;
             yAlignment += Boids[i].VectorY;
@@ -72,17 +86,18 @@ public class GameWorldVersion1 : IGameWorld
         yAlignment /= Boids.Count - 1;
 
         // 3. Separation
-        int xSeparation = 0;
-        int ySeparation = 0;
+        float xSeparation = 0;
+        float ySeparation = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
             if (secondary == primary) continue;
 
             var distance = primary.Distance(secondary);
-            if (distance > 20) continue;
+            if (distance > DesiredSeparation) continue;
 
-            var vectorFrom = secondary.VectorTo(primary);
+            var vectorFrom = secondary.VectorTo(primary)
+                .GetNormalisedVector();
 
             xSeparation += vectorFrom[0];
             ySeparation += vectorFrom[1];
@@ -90,31 +105,35 @@ public class GameWorldVersion1 : IGameWorld
         xSeparation /= Boids.Count - 1;
         ySeparation /= Boids.Count - 1;
 
-        primary.VectorX = xCohesion + xAlignment + xSeparation;
-        primary.VectorY = yCohesion + yAlignment + ySeparation;
+        primary.VectorX = (xCohesion * CohesionWeight)
+            + (xAlignment * AlignmentWeight)
+            + (xSeparation * SeparationWeight);
+        primary.VectorY = (yCohesion * CohesionWeight)
+            + (yAlignment * AlignmentWeight)
+            + (ySeparation * SeparationWeight);
     }
 }
 
 public class Boid
 {
-    public int PositionX { get; set; }
-    public int PositionY { get; set; }
-    public int VectorX { get; set; }
-    public int VectorY { get; set; }
+    public float PositionX { get; set; }
+    public float PositionY { get; set; }
+    public float VectorX { get; set; }
+    public float VectorY { get; set; }
 
-    public int Distance(Boid boid)
+    public float Distance(Boid boid)
     {
         var xDiff = boid.PositionX - PositionX;
         var yDiff = boid.PositionY - PositionY;
 
-        return (int)Math.Sqrt(xDiff * xDiff + yDiff * yDiff);
+        return (float)Math.Sqrt(xDiff * xDiff + yDiff * yDiff);
     }
 
-    public int[] VectorTo(Boid boid)
+    public float[] VectorTo(Boid boid)
     {
         var xDiff = PositionX - boid.PositionX;
         var yDiff = PositionY - boid.PositionY;
 
-        return new int[] { xDiff, yDiff };
+        return new float[] { xDiff, yDiff };
     }
 }

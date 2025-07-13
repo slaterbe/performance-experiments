@@ -2,7 +2,7 @@
 
 __Execute Builds__
 
-`./bin/Release/net8.0/MyApp`
+`./bin/Release/net8.0/linux-x64/MyApp`
 
 __Quick Execution__
 

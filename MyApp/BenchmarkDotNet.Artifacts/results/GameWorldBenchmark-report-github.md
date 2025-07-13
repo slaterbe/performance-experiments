@@ -9,6 +9,6 @@ Intel Core i7-5500U CPU 2.40GHz (Broadwell), 1 CPU, 4 logical and 2 physical cor
 IterationCount=20  
 
 ```
-| Method            | Mean     | Error    | StdDev   | Gen0    | Allocated |
-|------------------ |---------:|---------:|---------:|--------:|----------:|
-| GameWorldVersion1 | 18.88 ms | 0.764 ms | 0.850 ms | 93.7500 |  248.5 KB |
+| Method            | Mean     | Error    | StdDev   | Gen0     | Allocated |
+|------------------ |---------:|---------:|---------:|---------:|----------:|
+| GameWorldVersion1 | 13.04 ms | 0.127 ms | 0.141 ms | 234.3750 | 489.01 KB |
