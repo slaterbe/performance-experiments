@@ -16,11 +16,11 @@ public class GameWorldBenchmark
         configuration.BoidCount = 1024;
 
         configuration.PerceptionDistance = 100f;
-        configuration.DesiredSeparation = 20f;
+        configuration.DesiredSeparation = 10;
 
         configuration.AlignmentWeight = 1.0f;
         configuration.CohesionWeight = 1.0f;
-        configuration.SeparationWeight = 1.0f;
+        configuration.SeparationWeight = 3.0f;
 
         gameWorld = new GameWorldVersion1(configuration);
     }

@@ -7,7 +7,7 @@ public class TriangleWindow : GameWindow
 {
     public static TriangleWindow Singleton;
 
-    public static int SIZE = 512;
+    public static int SIZE = 1024;
 
     int _vertexBufferObject;
     int _vertexArrayObject;
@@ -15,39 +15,38 @@ public class TriangleWindow : GameWindow
 
     private bool _bufferInitialized = false;
 
-    public static int[] xVertex;
-    public static int[] yVertex;
+    public static float[] xVertex;
+    public static float[] yVertex;
 
     public static void UpdateVertices()
     {
-        if (Singleton == null) return;
-
-        var newVertices = new float[xVertex.Length * 6];
-        var offset = 10f;
-
-        for (int i = 0; i < xVertex.Length; i++)
+        lock (Singleton._vertices)
         {
-            var newX = (float)xVertex[i];
-            var newY = (float)yVertex[i];
+            if (Singleton == null) return;
 
-            newVertices[i * 6] = newX - offset;
-            newVertices[i * 6 + 1] = newY - offset;
+            var newVertices = new float[xVertex.Length * 6];
+            var offset = 10f;
 
-            newVertices[i * 6 + 2] = newX;
-            newVertices[i * 6 + 3] = newY;
+            for (int i = 0; i < xVertex.Length; i++)
+            {
+                var newX = xVertex[i];
+                var newY = yVertex[i];
 
-            newVertices[i * 6 + 4] = newX + offset;
-            newVertices[i * 6 + 5] = newY - offset;
+                newVertices[i * 6] = newX - offset;
+                newVertices[i * 6 + 1] = newY - offset;
+
+                newVertices[i * 6 + 2] = newX;
+                newVertices[i * 6 + 3] = newY;
+
+                newVertices[i * 6 + 4] = newX + offset;
+                newVertices[i * 6 + 5] = newY - offset;
+            }
+
+            Singleton._vertices = newVertices;   
         }
-
-        Singleton._vertices = newVertices;
     }
 
-    float[] _vertices = {
-         0.0f,  0.2f, // top
-        -0.2f, -0.2f, // left
-         0.2f, -0.2f  // right
-    };
+    float[] _vertices = {};
 
     string _vertexShaderSrc = @"
         #version 330 core
@@ -109,29 +108,34 @@ public class TriangleWindow : GameWindow
 
     protected override void OnRenderFrame(FrameEventArgs args)
     {
-        base.OnRenderFrame(args);
+        lock (_vertices)
+        {
+            base.OnRenderFrame(args);
 
-        GL.Clear(ClearBufferMask.ColorBufferBit);
-        int[] viewport = new int[4];
-        GL.GetInteger(GetPName.Viewport, viewport);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            int[] viewport = new int[4];
+            GL.GetInteger(GetPName.Viewport, viewport);
 
-        GL.Viewport(0, 0, SIZE * 2, SIZE * 2);
+            GL.Viewport(0, 0, SIZE * 2, SIZE * 2);
 
-        // Upload new data every frame
-        GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-        GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, _vertices.Length * sizeof(float), _vertices);
+            //Console.WriteLine("Number of vertices: " + _vertices.Length);
 
-        GL.UseProgram(_shaderProgram);
+            // Upload new data every frame
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, _vertices.Length * sizeof(float), _vertices);
 
-        // Now set up the orthographic projection
-        Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, SIZE, 0, SIZE, -1, 1);
-        int matrixLocation = GL.GetUniformLocation(_shaderProgram, "uProjection");
-        GL.UniformMatrix4(matrixLocation, false, ref ortho);
+            GL.UseProgram(_shaderProgram);
 
-        GL.BindVertexArray(_vertexArrayObject);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Length / 2);
+            // Now set up the orthographic projection
+            Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, SIZE, 0, SIZE, -1, 1);
+            int matrixLocation = GL.GetUniformLocation(_shaderProgram, "uProjection");
+            GL.UniformMatrix4(matrixLocation, false, ref ortho);
 
-        SwapBuffers();
+            GL.BindVertexArray(_vertexArrayObject);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Length / 2);
+
+            SwapBuffers();   
+        }
     }
 
     protected override void OnUnload()
@@ -142,7 +146,7 @@ public class TriangleWindow : GameWindow
         GL.DeleteProgram(_shaderProgram);
     }
 
-    public static void Main(int size)
+    public static void Main(int size, int boidCount)
     {
         var gws = GameWindowSettings.Default;
         var nws = new NativeWindowSettings()
@@ -154,19 +158,29 @@ public class TriangleWindow : GameWindow
         using var window = new TriangleWindow(gws, nws);
         Singleton = window;
 
-        xVertex = new int[] { 10, 128, 200, SIZE - 40, 200 };
-        yVertex = new int[] { 10, 128, 200, SIZE - 40, 10 };
+        xVertex = new float[boidCount];
+        xVertex[0] = 10f;
+        xVertex[1] = 128f;
+        xVertex[2] = 200f;
+        xVertex[3] = size - 40f;
+        xVertex[4] = 200f;
+
+        yVertex = new float[boidCount];
+        xVertex[0] = 10f;
+        xVertex[1] = 128f;
+        xVertex[2] = 200f;
+        xVertex[3] = size - 40f;
+        xVertex[4] = 10;
 
         UpdateVertices();
-            // Execute();
 
         window.Run();
     }
 
     public static void Execute()
     {
-        xVertex = new int[] { 10, 128, 200, SIZE - 40, 200 };
-        yVertex = new int[] { 150, 128, 200, SIZE - 40, 10 };
+        xVertex = new float[] { 10, 128, 200, SIZE - 40, 200 };
+        yVertex = new float[] { 150, 128, 200, SIZE - 40, 10 };
 
         UpdateVertices();
         Console.WriteLine("Updating vertexes");

@@ -14,3 +14,20 @@ __Benchmark Commands__
 `dotnet build -c Release`
 
 `dotnet run -c Release`
+
+
+__Next things to do__
+
+- Wrap units around ege of screen
+- Balance algorithm
+
+- Identify how many elements can run optimally
+- Monitor Rendering loop time in OpenGL
+
+Future:
+
+- First Round of optimisation
+
+
+Done: 
+- Connect GameWorldVersion1 to Rendering Engine (14/07/2025)

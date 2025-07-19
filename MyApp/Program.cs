@@ -1,5 +1,3 @@
 ﻿using BenchmarkDotNet.Running;
-//RunRenderer.ExecuteRender();
-RunExperiments.ExecuteTests();
-
-//BenchmarkRunner.Run<MyBenchmark>();
+RunRenderer.ExecuteRender();
+//RunExperiments.ExecuteTests();

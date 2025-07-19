@@ -9,6 +9,9 @@ public class GameWorldVersion1 : IGameWorld
     public readonly float PerceptionDistance;
     public readonly float DesiredSeparation;
 
+    private readonly float WorldHeight;
+    private readonly float WorldWidth;
+
     public GameWorldVersion1(FlockingConfiguration config)
     {
         var random = new Random();
@@ -18,6 +21,9 @@ public class GameWorldVersion1 : IGameWorld
 
         PerceptionDistance = config.PerceptionDistance;
         DesiredSeparation = config.DesiredSeparation;
+
+        WorldHeight = config.WorldHeight;
+        WorldWidth = config.WorldWidth;
 
         for (int i = 0; i < config.BoidCount; i++)
         {
@@ -43,7 +49,23 @@ public class GameWorldVersion1 : IGameWorld
         {
             Boids[i].PositionX += Boids[i].VectorX;
             Boids[i].PositionY += Boids[i].VectorY;
+
+            if (Boids[i].PositionX > WorldWidth)
+                Boids[i].PositionX -= WorldWidth;
+
+            if (Boids[i].PositionX < 0)
+                Boids[i].PositionX += WorldWidth;
+
+            if (Boids[i].PositionY > WorldHeight)
+                Boids[i].PositionY -= WorldHeight;
+
+            if (Boids[i].PositionY < 0)
+                Boids[i].PositionY += WorldHeight;
+
+            
         }
+
+        Console.WriteLine(Boids[0].PositionX + "," + Boids[0].PositionY);
     }
 
     public void IncrementBoid(Boid primary)
@@ -51,7 +73,9 @@ public class GameWorldVersion1 : IGameWorld
         // 1. Cohesion
         float xCohesion = 0;
         float yCohesion = 0;
+        float count = 0;
 
+        count = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
@@ -63,14 +87,16 @@ public class GameWorldVersion1 : IGameWorld
             var vectorFrom = primary.VectorTo(secondary)
                 .GetNormalisedVector();
             xCohesion += vectorFrom[0];
-            yCohesion += vectorFrom[0];
+            yCohesion += vectorFrom[1];
+            count++;
         }
-        xCohesion /= Boids.Count - 1;
-        yCohesion /= Boids.Count - 1;
+        xCohesion /= count == 0 ? 1 : count;
+        yCohesion /= count == 0 ? 1 : count;
 
         // 2. Alignment
         float xAlignment = 0;
         float yAlignment = 0;
+        count = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
@@ -81,13 +107,15 @@ public class GameWorldVersion1 : IGameWorld
 
             xAlignment += Boids[i].VectorX;
             yAlignment += Boids[i].VectorY;
+            count++;
         }
-        xAlignment /= Boids.Count - 1;
-        yAlignment /= Boids.Count - 1;
+        xAlignment /= count == 0 ? 1 : count;
+        yAlignment /= count == 0 ? 1 : count;
 
         // 3. Separation
         float xSeparation = 0;
         float ySeparation = 0;
+        count = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
@@ -101,9 +129,10 @@ public class GameWorldVersion1 : IGameWorld
 
             xSeparation += vectorFrom[0];
             ySeparation += vectorFrom[1];
+            count++;
         }
-        xSeparation /= Boids.Count - 1;
-        ySeparation /= Boids.Count - 1;
+        xSeparation /= count == 0 ? 1 : count;
+        ySeparation /= count == 0 ? 1 : count;
 
         primary.VectorX = (xCohesion * CohesionWeight)
             + (xAlignment * AlignmentWeight)
@@ -111,6 +140,16 @@ public class GameWorldVersion1 : IGameWorld
         primary.VectorY = (yCohesion * CohesionWeight)
             + (yAlignment * AlignmentWeight)
             + (ySeparation * SeparationWeight);
+    }
+
+    public float[] GetBoidXPosition()
+    {
+        return this.Boids.Select(b => b.PositionX).ToArray();
+    }
+
+    public float[] GetBoidYPosition()
+    {
+        return this.Boids.Select(b => b.PositionY).ToArray();
     }
 }
 
