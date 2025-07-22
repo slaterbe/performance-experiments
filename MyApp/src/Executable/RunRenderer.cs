@@ -5,14 +5,14 @@ public static class RunRenderer
         var configuration = new FlockingConfiguration();
         configuration.WorldWidth = 1024;
         configuration.WorldHeight = 1024;
-        configuration.BoidCount = 50;
+        configuration.BoidCount = 80;
 
-        configuration.PerceptionDistance = 100f;
-        configuration.DesiredSeparation = 30f;
+        configuration.PerceptionDistance = 40f;
+        configuration.DesiredSeparation = 40f;
 
         configuration.AlignmentWeight = 1.0f;
         configuration.CohesionWeight = 1.0f;
-        configuration.SeparationWeight = 2.0f;
+        configuration.SeparationWeight = 1.0f;
 
         var gameWorld = new GameWorldVersion1(configuration);
 
@@ -26,7 +26,7 @@ public static class RunRenderer
                 TriangleWindow.yVertex = gameWorld.GetBoidYPosition();
                 TriangleWindow.UpdateVertices();
 
-                Thread.Sleep(10);
+                Thread.Sleep(30);
                 gameWorld.Increment();
             }
         });

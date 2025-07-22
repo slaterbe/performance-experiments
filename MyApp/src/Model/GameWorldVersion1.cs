@@ -32,8 +32,8 @@ public class GameWorldVersion1 : IGameWorld
             {
                 PositionX = random.Next(config.WorldWidth),
                 PositionY = random.Next(config.WorldHeight),
-                VectorX = 0,
-                VectorY = 0
+                VectorX = random.Next(10),
+                VectorY = random.Next(10)
             });
         }
     }
@@ -60,19 +60,14 @@ public class GameWorldVersion1 : IGameWorld
                 Boids[i].PositionY -= WorldHeight;
 
             if (Boids[i].PositionY < 0)
-                Boids[i].PositionY += WorldHeight;
-
-            
+                Boids[i].PositionY += WorldHeight;            
         }
-
-        Console.WriteLine(Boids[0].PositionX + "," + Boids[0].PositionY);
     }
 
     public void IncrementBoid(Boid primary)
     {
         // 1. Cohesion
-        float xCohesion = 0;
-        float yCohesion = 0;
+        var cohesion = new float[] { 0, 0 };
         float count = 0;
 
         count = 0;
@@ -85,36 +80,32 @@ public class GameWorldVersion1 : IGameWorld
             if (distance > PerceptionDistance) continue;
 
             var vectorFrom = primary.VectorTo(secondary)
-                .GetNormalisedVector();
-            xCohesion += vectorFrom[0];
-            yCohesion += vectorFrom[1];
+                .GetInvertedLinearForce(distance);
+            cohesion[0] += vectorFrom[0];
+            cohesion[1] += vectorFrom[1];
             count++;
         }
-        xCohesion /= count == 0 ? 1 : count;
-        yCohesion /= count == 0 ? 1 : count;
+        cohesion = cohesion.GetNormalisedVector();
 
         // 2. Alignment
-        float xAlignment = 0;
-        float yAlignment = 0;
+        var alignment = new float[] { 0, 0 };
         count = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
             var secondary = Boids[i];
-            if (secondary == primary) continue;
+            // if (secondary == primary) continue;
 
             var distance = primary.Distance(secondary);
             if (distance > PerceptionDistance) continue;
 
-            xAlignment += Boids[i].VectorX;
-            yAlignment += Boids[i].VectorY;
+            alignment[0] += Boids[i].VectorX;
+            alignment[1] += Boids[i].VectorY;
             count++;
         }
-        xAlignment /= count == 0 ? 1 : count;
-        yAlignment /= count == 0 ? 1 : count;
+        alignment = alignment.GetNormalisedVector();
 
         // 3. Separation
-        float xSeparation = 0;
-        float ySeparation = 0;
+        var seperation = new float[] { 0, 0 };
         count = 0;
         for (int i = 0; i < Boids.Count; i++)
         {
@@ -124,22 +115,23 @@ public class GameWorldVersion1 : IGameWorld
             var distance = primary.Distance(secondary);
             if (distance > DesiredSeparation) continue;
 
-            var vectorFrom = secondary.VectorTo(primary)
-                .GetNormalisedVector();
+            var vectorFrom = primary.VectorTo(secondary)
+                .GetInvertedLinearForce(distance);
 
-            xSeparation += vectorFrom[0];
-            ySeparation += vectorFrom[1];
+            seperation[0] += vectorFrom[0];
+            seperation[1] += vectorFrom[1];
             count++;
         }
-        xSeparation /= count == 0 ? 1 : count;
-        ySeparation /= count == 0 ? 1 : count;
+        seperation = seperation
+            .DivideByCount(count)
+            .GetNormalisedVector();
 
-        primary.VectorX = (xCohesion * CohesionWeight)
-            + (xAlignment * AlignmentWeight)
-            + (xSeparation * SeparationWeight);
-        primary.VectorY = (yCohesion * CohesionWeight)
-            + (yAlignment * AlignmentWeight)
-            + (ySeparation * SeparationWeight);
+        primary.VectorX = (cohesion[0] * CohesionWeight)
+            + (alignment[0] * AlignmentWeight)
+            + (seperation[0] * SeparationWeight);
+        primary.VectorY = (cohesion[1] * CohesionWeight)
+            + (alignment[1] * AlignmentWeight)
+            + (seperation[1] * SeparationWeight);
     }
 
     public float[] GetBoidXPosition()

@@ -54,10 +54,11 @@ public class TriangleWindow : GameWindow
         layout(location = 0) in vec2 aPosition;
 
         uniform mat4 uProjection;  // Model-View-Projection matrix
+        uniform mat4 uRotation;
 
         void main()
         {
-            gl_Position = uProjection * vec4(aPosition, 0.0, 1.0);
+            gl_Position = uRotation * uProjection * vec4(aPosition, 0.0, 1.0);
         }
     ";
 
@@ -112,13 +113,15 @@ public class TriangleWindow : GameWindow
         {
             base.OnRenderFrame(args);
 
+            float angleInRadians = MathHelper.DegreesToRadians(0);
+
+            Matrix4 rotation = Matrix4.CreateRotationZ(angleInRadians);
+
             GL.Clear(ClearBufferMask.ColorBufferBit);
             int[] viewport = new int[4];
             GL.GetInteger(GetPName.Viewport, viewport);
 
             GL.Viewport(0, 0, SIZE * 2, SIZE * 2);
-
-            //Console.WriteLine("Number of vertices: " + _vertices.Length);
 
             // Upload new data every frame
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
@@ -130,6 +133,9 @@ public class TriangleWindow : GameWindow
             Matrix4 ortho = Matrix4.CreateOrthographicOffCenter(0, SIZE, 0, SIZE, -1, 1);
             int matrixLocation = GL.GetUniformLocation(_shaderProgram, "uProjection");
             GL.UniformMatrix4(matrixLocation, false, ref ortho);
+
+            int rotationLocation = GL.GetUniformLocation(_shaderProgram, "uRotation");
+            GL.UniformMatrix4(rotationLocation, false, ref rotation);
 
             GL.BindVertexArray(_vertexArrayObject);
             GL.DrawArrays(PrimitiveType.Triangles, 0, _vertices.Length / 2);
