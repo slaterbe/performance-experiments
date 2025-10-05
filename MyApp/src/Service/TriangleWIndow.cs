@@ -18,6 +18,9 @@ public class TriangleWindow : GameWindow
     public static float[] xVertex;
     public static float[] yVertex;
 
+    public static float[] xAlignment;
+    public static float[] yAlignment;
+
     public static void UpdateVertices()
     {
         lock (Singleton._vertices)
@@ -42,7 +45,7 @@ public class TriangleWindow : GameWindow
                 newVertices[i * 6 + 5] = newY - offset;
             }
 
-            Singleton._vertices = newVertices;   
+            Singleton._vertices = newVertices;
         }
     }
 

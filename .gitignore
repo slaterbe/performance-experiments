@@ -100,4 +100,5 @@ secrets.json
 docker-compose.override.yml
 
 #Benchmark Files
-./MyApp/BenchmarkDotNet.Artifacts
+./MyApp/BenchmarkDotNet.Artifacts/
+./MyApp/BenchmarkDotNet.Artifacts/results

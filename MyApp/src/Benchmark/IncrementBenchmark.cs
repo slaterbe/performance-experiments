@@ -4,7 +4,7 @@ using BenchmarkDotNet.Attributes;
 [MemoryDiagnoser]
 
 [SimpleJob(-1, -1, 20)]
-public class MyBenchmark
+public class IncrementBenchmark
 {
     public int size = 2000000;
 
