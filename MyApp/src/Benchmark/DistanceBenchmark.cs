@@ -48,6 +48,72 @@ public class DistanceBenchmark
     }
 
     [Benchmark]
+    public void EculidanDistanceWithThread10()
+    {
+        Parallel.For(0, 4, counter =>
+        {
+            float total = 0;
+            int step = size / 4;
+            int start = counter * step;
+            int end = step * (counter + 1);
+
+            for (int i = start; i < end; i++)
+            {
+                float x1 = xPosition1[i];
+                float y1 = yPosition1[i];
+
+                float x2 = xPosition2[i];
+                float y2 = yPosition2[i];
+
+                total += PrimitiveExtension.EculidanDistance(x1, y1, x2, y2);
+            }
+            consumer.Consume(total);
+        });
+    }
+
+        [Benchmark]
+    public void EculidanDistanceWithThread20()
+    {
+        Parallel.For(0, 20, counter =>
+        {
+            float total = 0;
+            int step = size / 20;
+            int start = step * counter;
+            int end = step * (counter + 1);
+
+            for (int i = start; i < end; i++)
+            {
+                float x1 = xPosition1[i];
+                float y1 = yPosition1[i];
+
+                float x2 = xPosition2[i];
+                float y2 = yPosition2[i];
+
+                total += PrimitiveExtension.EculidanDistance(x1, y1, x2, y2);
+            }
+            consumer.Consume(total);
+        });
+    }
+
+    [Benchmark]
+    public void EculidanReciprocalDistance()
+    {
+        float total = 0;
+        for (int i = 0; i < size; i++)
+        {
+            float x1 = xPosition1[i];
+            float y1 = yPosition1[i];
+
+            float x2 = xPosition2[i];
+            float y2 = yPosition2[i];
+
+            total += PrimitiveExtension.EculidanReciprocal(x1, y1, x2, y2);
+        }
+        consumer.Consume(total);
+    }
+
+
+    [Benchmark]
     public void SquaredEculidanDistance()
     {
         float total = 0;

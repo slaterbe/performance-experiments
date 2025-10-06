@@ -9,16 +9,18 @@ Intel Core i7-5500U CPU 2.40GHz (Broadwell), 1 CPU, 4 logical and 2 physical cor
 IterationCount=20  
 
 ```
-| Method                       | Mean      | Error     | StdDev    | Allocated |
-|----------------------------- |----------:|----------:|----------:|----------:|
-| EculidanDistance             |  79.88 ms |  3.267 ms |  3.496 ms |         - |
-| SquaredEculidanDistance      |  63.90 ms |  2.894 ms |  3.333 ms |         - |
-| ManhattenDistancev1          |  79.49 ms | 12.029 ms | 13.853 ms |         - |
-| ManhattenDistancev2          |  68.79 ms |  2.420 ms |  2.485 ms |         - |
-| OctileDistance               | 184.73 ms |  0.859 ms |  0.882 ms |         - |
-| FasterHypDistance            |  88.81 ms |  1.390 ms |  1.365 ms |         - |
-| SquaredMultipleAddDistance   |  61.98 ms |  1.773 ms |  2.042 ms |         - |
-| EuclideanDistance            |  26.93 ms |  1.572 ms |  1.747 ms |         - |
-| SIMDEuclideanDistance        |  31.78 ms |  3.882 ms |  3.987 ms |      21 B |
-| SIMDEuclideanSquaredDistance |  36.98 ms |  4.741 ms |  5.460 ms |         - |
-| SumEuclideanAvx2             |  34.53 ms |  1.458 ms |  1.679 ms |         - |
+| Method                       | Mean      | Error    | StdDev    | Allocated |
+|----------------------------- |----------:|---------:|----------:|----------:|
+| EculidanDistance             |  76.16 ms | 0.702 ms |  0.780 ms |         - |
+| EculidanDistanceWithThread10 |  45.19 ms | 1.041 ms |  1.157 ms |    2478 B |
+| EculidanDistanceWithThread20 |  45.13 ms | 0.728 ms |  0.779 ms |    3720 B |
+| EculidanReciprocalDistance   |  68.46 ms | 1.368 ms |  1.520 ms |         - |
+| SquaredEculidanDistance      |  56.29 ms | 0.959 ms |  1.026 ms |         - |
+| ManhattenDistancev1          |  61.34 ms | 1.051 ms |  1.124 ms |         - |
+| ManhattenDistancev2          |  69.38 ms | 3.097 ms |  3.041 ms |         - |
+| OctileDistance               | 191.82 ms | 3.634 ms |  3.732 ms |         - |
+| FasterHypDistance            | 104.41 ms | 9.954 ms | 11.463 ms |         - |
+| SquaredMultipleAddDistance   |  71.97 ms | 2.998 ms |  3.332 ms |         - |
+| SIMDEuclideanDistance        |  35.40 ms | 5.108 ms |  5.466 ms |         - |
+| SIMDEuclideanSquaredDistance |  35.66 ms | 6.247 ms |  6.944 ms |         - |
+| SumEuclideanAvx2             |  23.42 ms | 0.829 ms |  0.954 ms |         - |

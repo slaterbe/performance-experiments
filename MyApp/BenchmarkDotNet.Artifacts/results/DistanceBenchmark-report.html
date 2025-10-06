@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='utf-8' />
-<title>DistanceBenchmark-20251005-102420</title>
+<title>DistanceBenchmark-20251006-150923</title>
 
 <style type="text/css">
 	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
@@ -25,17 +25,19 @@ Intel Core i7-5500U CPU 2.40GHz (Broadwell), 1 CPU, 4 logical and 2 physical cor
 <table>
 <thead><tr><th>Method                </th><th>Mean</th><th>Error</th><th>StdDev</th><th>Allocated</th>
 </tr>
-</thead><tbody><tr><td>EculidanDistance</td><td>79.88 ms</td><td>3.267 ms</td><td>3.496 ms</td><td>-</td>
-</tr><tr><td>SquaredEculidanDistance</td><td>63.90 ms</td><td>2.894 ms</td><td>3.333 ms</td><td>-</td>
-</tr><tr><td>ManhattenDistancev1</td><td>79.49 ms</td><td>12.029 ms</td><td>13.853 ms</td><td>-</td>
-</tr><tr><td>ManhattenDistancev2</td><td>68.79 ms</td><td>2.420 ms</td><td>2.485 ms</td><td>-</td>
-</tr><tr><td>OctileDistance</td><td>184.73 ms</td><td>0.859 ms</td><td>0.882 ms</td><td>-</td>
-</tr><tr><td>FasterHypDistance</td><td>88.81 ms</td><td>1.390 ms</td><td>1.365 ms</td><td>-</td>
-</tr><tr><td>SquaredMultipleAddDistance</td><td>61.98 ms</td><td>1.773 ms</td><td>2.042 ms</td><td>-</td>
-</tr><tr><td>EuclideanDistance</td><td>26.93 ms</td><td>1.572 ms</td><td>1.747 ms</td><td>-</td>
-</tr><tr><td>SIMDEuclideanDistance</td><td>31.78 ms</td><td>3.882 ms</td><td>3.987 ms</td><td>21 B</td>
-</tr><tr><td>SIMDEuclideanSquaredDistance</td><td>36.98 ms</td><td>4.741 ms</td><td>5.460 ms</td><td>-</td>
-</tr><tr><td>SumEuclideanAvx2</td><td>34.53 ms</td><td>1.458 ms</td><td>1.679 ms</td><td>-</td>
+</thead><tbody><tr><td>EculidanDistance</td><td>76.16 ms</td><td>0.702 ms</td><td>0.780 ms</td><td>-</td>
+</tr><tr><td>EculidanDistanceWithThread10</td><td>45.19 ms</td><td>1.041 ms</td><td>1.157 ms</td><td>2478 B</td>
+</tr><tr><td>EculidanDistanceWithThread20</td><td>45.13 ms</td><td>0.728 ms</td><td>0.779 ms</td><td>3720 B</td>
+</tr><tr><td>EculidanReciprocalDistance</td><td>68.46 ms</td><td>1.368 ms</td><td>1.520 ms</td><td>-</td>
+</tr><tr><td>SquaredEculidanDistance</td><td>56.29 ms</td><td>0.959 ms</td><td>1.026 ms</td><td>-</td>
+</tr><tr><td>ManhattenDistancev1</td><td>61.34 ms</td><td>1.051 ms</td><td>1.124 ms</td><td>-</td>
+</tr><tr><td>ManhattenDistancev2</td><td>69.38 ms</td><td>3.097 ms</td><td>3.041 ms</td><td>-</td>
+</tr><tr><td>OctileDistance</td><td>191.82 ms</td><td>3.634 ms</td><td>3.732 ms</td><td>-</td>
+</tr><tr><td>FasterHypDistance</td><td>104.41 ms</td><td>9.954 ms</td><td>11.463 ms</td><td>-</td>
+</tr><tr><td>SquaredMultipleAddDistance</td><td>71.97 ms</td><td>2.998 ms</td><td>3.332 ms</td><td>-</td>
+</tr><tr><td>SIMDEuclideanDistance</td><td>35.40 ms</td><td>5.108 ms</td><td>5.466 ms</td><td>-</td>
+</tr><tr><td>SIMDEuclideanSquaredDistance</td><td>35.66 ms</td><td>6.247 ms</td><td>6.944 ms</td><td>-</td>
+</tr><tr><td>SumEuclideanAvx2</td><td>23.42 ms</td><td>0.829 ms</td><td>0.954 ms</td><td>-</td>
 </tr></tbody></table>
 </body>
 </html>
